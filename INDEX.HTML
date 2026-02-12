@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayoub Phone | Black & Gold Edition</title>
+    <style>
+        /* إعدادات التصميم الأساسية */
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #0b0b0b; color: #ffffff; overflow-x: hidden; }
+
+        /* الهيدر والتنقل */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: rgba(21, 21, 21, 0.95);
+            border-bottom: 2px solid #bf953f; position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-weight: bold; color: #bf953f; font-size: 1.5rem; letter-spacing: 2px; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 20px; }
+        nav ul li a { text-decoration: none; color: #fff; transition: 0.3s; }
+        nav ul li a:hover { color: #bf953f; }
+
+        .cart-icon { position: relative; cursor: pointer; font-size: 24px; }
+        #cart-count {
+            position: absolute; top: -8px; right: -12px;
+            background: #bf953f; color: #000; font-size: 11px;
+            padding: 2px 6px; border-radius: 50%; font-weight: bold;
+        }
+
+        /* الواجهة الرئيسية (Hero) */
+        .hero {
+            height: 60vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1556656793-062ff987b50d?q=80&w=2070');
+            background-size: cover; background-position: center;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            background: linear-gradient(45deg, #bf953f, #fcf6ba, #aa771c);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .btn-shop {
+            margin-top: 20px; padding: 15px 40px;
+            background: linear-gradient(45deg, #bf953f, #aa771c);
+            color: #000; text-decoration: none; border-radius: 30px;
+            font-weight: bold; transition: 0.3s; box-shadow: 0 4px 15px rgba(191,149,63,0.4);
+        }
+
+        /* شبكة المنتجات */
+        .products { padding: 60px 5%; }
+        .product-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
+        }
+        .card {
+            background: #151515; padding: 25px; border-radius: 20px;
+            border: 1px solid #222; text-align: center; transition: 0.4s;
+        }
+        .card:hover { border-color: #bf953f; transform: translateY(-10px); }
+        .product-img {
+            height: 180px; background: #1a1a1a; display: flex;
+            align-items: center; justify-content: center; font-size: 60px;
+            border-radius: 15px; margin-bottom: 20px;
+        }
+        .price { color: #bf953f; font-size: 1.5rem; font-weight: bold; margin: 15px 0; }
+        
+        .add-to-cart-btn {
+            width: 100%; padding: 12px; background: transparent;
+            border: 2px solid #bf953f; color: #bf953f; cursor: pointer;
+            border-radius: 10px; font-weight: bold; transition: 0.3s;
+        }
+        .add-to-cart-btn:hover { background: #bf953f; color: #000; }
+
+        /* سلة التسوق الجانبية */
+        .cart-sidebar {
+            position: fixed; right: -100%; top: 0; width: 350px; height: 100%;
+            background: #111; z-index: 1000; transition: 0.5s;
+            display: flex; flex-direction: column; border-left: 2px solid #bf953f;
+        }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { padding: 20px; background: #000; display: flex; justify-content: space-between; align-items: center; }
+        #cart-items { flex: 1; padding: 20px; overflow-y: auto; }
+        
+        .cart-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid #222; margin-bottom: 10px;
+        }
+        .remove-btn { color: #ff4444; cursor: pointer; font-size: 0.8rem; border: none; background: none; }
+
+        /* نموذج بيانات الزبون */
+        .cart-footer { padding: 20px; background: #000; border-top: 1px solid #222; }
+        .client-form h4 { color: #bf953f; margin-bottom: 10px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .premium-input {
+            width: 100%; padding: 10px 15px; margin-bottom: 10px;
+            background: #1a1a1a; border: 1px solid #333; border-radius: 8px;
+            color: white; font-size: 0.9rem; outline: none; transition: 0.3s;
+        }
+        .premium-input:focus { border-color: #bf953f; box-shadow: 0 0 8px rgba(191, 149, 63, 0.2); }
+
+        .checkout-btn {
+            width: 100%; padding: 15px; background: #25d366;
+            border: none; color: #fff; border-radius: 10px;
+            font-weight: bold; cursor: pointer; font-size: 1rem;
+            display: flex; justify-content: center; align-items: center; transition: 0.3s;
+        }
+        .checkout-btn:hover { background: #1ebe57; transform: translateY(-2px); }
+
+        footer { text-align: center; padding: 40px; background: #000; color: #555; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">AYOUB PHONE</div>
+        <ul>
+            <li><a href="#">Accueil</a></li>
+            <li><a href="#produits">Produits</a></li>
+        </ul>
+        <div class="cart-icon" onclick="toggleCart()">
+            🛒 <span id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>AYOUB PHONE</h1>
+        <p>L'excellence en accessoires mobiles</p>
+        <a href="#produits" class="btn-shop">Découvrir la collection</a>
+    </section>
+
+    <section class="products" id="produits">
+        <div class="product-grid">
+            <div class="card">
+                <div class="product-img">📱</div>
+                <h3>Coque Silicium Gold</h3>
+                <p class="price">150 DH</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Coque Gold', 150)">Ajouter au panier</button>
+            </div>
+            <div class="card">
+                <div class="product-img">🔌</div>
+                <h3>Chargeur Ultra Rapide</h3>
+                <p class="price">250 DH</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Chargeur Rapide', 250)">Ajouter au panier</button>
+            </div>
+            <div class="card">
+                <div class="product-img">🎧</div>
+                <h3>Airpods Pro Max</h3>
+                <p class="price">400 DH</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Airpods Pro', 400)">Ajouter au panier</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Mon Panier</h3>
+            <span style="cursor:pointer; font-size:30px;" onclick="toggleCart()">&times;</span>
+        </div>
+        
+        <div id="cart-items">
+            <p style="text-align:center; color:#555; margin-top:20px;">Votre panier est vide.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="client-form">
+                <h4>Informations Client</h4>
+                <input type="text" id="client-name" class="premium-input" placeholder="Nom Complet (الاسم)">
+                <input type="tel" id="client-phone" class="premium-input" placeholder="Téléphone (الهاتف)">
+                <input type="text" id="client-city" class="premium-input" placeholder="Ville (المدينة)">
+                
+                <h4>Mode de Paiement</h4>
+                <select id="payment-method" class="premium-input">
+                    <option value="Paiement à la livraison">🚚 Paiement à la livraison</option>
+                    <option value="Carte Bancaire">💳 Carte Bancaire</option>
+                </select>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin: 15px 0; font-size: 1.1rem; border-top: 1px solid #222; padding-top: 10px;">
+                <span>Total:</span>
+                <span style="color:#bf953f; font-weight:bold;"><span id="cart-total">0</span> DH</span>
+            </div>
+            
+            <button class="checkout-btn" onclick="checkout()">
+                Commander via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 AYOUB PHONE - Luxe & Design</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ id: Date.now(), name, price });
+            updateCartUI();
+            if(!document.getElementById('cart-sidebar').classList.contains('open')) {
+                toggleCart();
+            }
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+            
+            cartCount.innerText = cart.length;
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            if(cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align:center; color:#555; margin-top:20px;">Votre panier est vide.</p>';
+            } else {
+                cart.forEach((item) => {
+                    total += item.price;
+                    cartItems.innerHTML += `
+                        <div class="cart-item">
+                            <div>
+                                <div style="font-weight:bold">${item.name}</div>
+                                <div style="color:#bf953f">${item.price} DH</div>
+                            </div>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">Supprimer</button>
+                        </div>
+                    `;
+                });
+            }
+            cartTotal.innerText = total;
+        }
+
+        function checkout() {
+            if(cart.length === 0) return alert("Votre panier est vide !");
+
+            const name = document.getElementById('client-name').value.trim();
+            const phone = document.getElementById('client-phone').value.trim();
+            const city = document.getElementById('client-city').value.trim();
+            const payment = document.getElementById('payment-method').value;
+
+            if(!name || !phone || !city) {
+                return alert("Veuillez remplir vos informations (Nom, Téléphone, Ville) !");
+            }
+            
+            // بناء رسالة الواتساب المنسقة
+            let message = `*✨ طَلَبِيَة جَدِيدَة - AYOUB PHONE ✨*\n`;
+            message += `━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            message += `👤 *معلومات الزبون (Client):*\n`;
+            message += `• *الاسم:* ${name}\n`;
+            message += `• *الهاتف:* ${phone}\n`;
+            message += `• *المدينة:* ${city}\n`;
+            message += `• *الدفع:* ${payment}\n\n`;
+            
+            message += `📦 *المنتجات المطلوبة:*\n`;
+            cart.forEach((item, index) => {
+                message += `  ${index + 1}. ${item.name} ➔ *${item.price} DH*\n`;
+            });
+            
+            message += `\n━━━━━━━━━━━━━━━━━━━\n`;
+            message += `💰 *المجموع الإجمالي:* *${document.getElementById('cart-total').innerText} DH*\n`;
+            message += `━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            if(payment === "Carte Bancaire") {
+                message += `⚠️ _الزبون يطلب الدفع بالبطاقة، يرجى تزويده برابط الدفع._\n\n`;
+            }
+            
+            message += `✅ *يرجى تأكيد الطلبية في أقرب وقت.*`;
+            
+            const adminPhone = "212702331889"; // استبدل بـ رقمك
+            window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
